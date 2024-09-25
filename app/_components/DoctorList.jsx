@@ -19,7 +19,7 @@ function DoctorList({doctorList, heading}) {
                     alt='dr'
                     width={500}
                     height={200}
-                    className='h-[400px] sm:h-[200px] w-full object-cover rounded-lg'
+                    className='h-[400px]  w-full object-cover rounded-lg'
                     />
                     <div className='mt-3 items-baseline flex flex-col gap-1'>
                         <h2 className='text-[10px] bg-blue-100 
