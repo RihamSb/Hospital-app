@@ -18,13 +18,12 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
-  
 function CategoryList() {
 
     const [categoryList, setCategoryList] = useState([]);
 
-    const params= usePathname();
-    const category= params.split('/')[2] ;
+    const params = usePathname();
+    const category = decodeURIComponent(params.split('/')[2]); // Decoding the URL-encoded parameter
 
   useEffect(()=>{
     getCategoryList()
@@ -32,8 +31,8 @@ function CategoryList() {
     // console.log(params)
   }, [])
 
-  const getCategoryList=()=>{
-    GlobalApi.getCategory().then(resp=>{
+  const getCategoryList = () => {
+    GlobalApi.getCategory().then(resp => {
       console.log(resp.data.data);
       setCategoryList(resp.data.data)
     })
@@ -41,37 +40,35 @@ function CategoryList() {
 
   return (
     <div className="h-screen mt-5 flex flex-col">
-    <Command>
-    <CommandInput placeholder="Type a command or search..." />
-    <CommandList className='overflow-visible'>
-        <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Suggestions" >
-        {categoryList&&categoryList.map((item, index)=>(
-             <CommandItem key={index}>
-                <Link href={'/search/'+item.attributes.Name} 
-                className={`
-                p-2 flex gap-2 text-[14px]
-                text-blue-600 rounded-md cursor-pointer w-full
-                items-center 
-                ${category==item.attributes.Name&& 'bg-blue-100'}
-                `} >
-                <Image 
-                src={item.attributes?.Icon?.data.attributes?.url}
-                alt='icon'
-                width={25}
-                height={25}
-                />
-                    <label>{item.attributes.Name}</label>
+      <Command>
+        <CommandInput placeholder="Type a command or search..." />
+        <CommandList className='overflow-visible'>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Suggestions" >
+            {categoryList && categoryList.map((item, index) => (
+              <CommandItem key={index}>
+                <Link href={'/search/' + encodeURIComponent(item.attributes.Name)} // Encoding the URL to prevent issues
+                  className={`
+                  p-2 flex gap-2 text-[14px]
+                  text-blue-600 rounded-md cursor-pointer w-full
+                  items-center 
+                  ${category == item.attributes.Name && 'bg-blue-100'}
+                  `}>
+                  <Image 
+                    src={item.attributes?.Icon?.data.attributes?.url}
+                    alt='icon'
+                    width={25}
+                    height={25}
+                  />
+                  <label>{item.attributes.Name}</label>
                 </Link>
-             </CommandItem>
-        ))}
-
-        </CommandGroup>
-        
-    </CommandList>
-    </Command>
-</div>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </Command>
+    </div>
   )
 }
 
-export default CategoryList
+export default CategoryList;

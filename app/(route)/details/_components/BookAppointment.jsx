@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from "@/components/ui/calendar";
 import { CalendarDays, Clock } from 'lucide-react';
 import { useKindeBrowserClient } from '@kinde-oss/kinde-auth-nextjs';
+import emailjs from 'emailjs-com'; // Import EmailJS
 import GlobalApi from '@/app/_utils/GlobalApi';
 import { toast } from 'sonner';
 
@@ -20,34 +21,57 @@ function BookAppointment({ doctor }) {
     const [date, setDate] = useState(new Date());
     const [timeSlot, setTimeSlot] = useState([]);
     const [selectedTimeSlot, setSelectedTimeSlot] = useState();
-    const [note, setNote] = useState(''); // Added state for note input
+    const [note, setNote] = useState('');
     const { user } = useKindeBrowserClient();
 
     const saveBooking = () => {
+        // Check if the user is logged in
+        if (!user) {
+            console.error('User is not available');
+            toast.error('User is not logged in.');
+            return; // Exit early if user is not available
+        }
+
         const data = {
             data: {
-                UserName: user.given_name + " " + user.family_name,
-                Date: date,
-                Email: user.email,
+                UserName: `${user.given_name || 'Guest'} ${user.family_name || ''}`,
+                Date: date.toISOString(), // Ensure the date is in the correct format
+                Email: user.email || 'noemail@example.com',
                 Time: selectedTimeSlot,
                 doctor: doctor.id,
-                Note: note
+                Note: note,
             }
         };
+
+        // Save the booking in your backend (if needed)
         GlobalApi.bookAppointment(data).then(resp => {
-            console.log(resp);
             if (resp) {
-                GlobalApi.sendEmail(data).then(resp=>{
-                    console.log(resp)
+                // Sending email using EmailJS
+                const emailParams = {
+                    from_name: user.given_name || 'Guest',
+                    to_email: user.email || 'noemail@example.com',
+                    message: `Your appointment is confirmed for ${data.data.Date} at ${data.data.Time}.`,
+                };
+
+                emailjs.send(
+                    'service_9bad13t', // Replace with your EmailJS Service ID
+                    'template_swaebgq', // Replace with your EmailJS Template ID
+                    emailParams,
+                    'HPqnFe-tLsFOj-TFr' // Replace with your EmailJS User ID
+                )
+                .then((response) => {
+                    console.log('Email sent successfully!', response.status, response.text);
+                    toast('Booking Confirmation sent on Email');
                 })
-                toast('Booking Confirmation sent on Email');
+                .catch((error) => {
+                    console.error('Error sending email:', error);
+                    toast.error('Failed to send confirmation email');
+                });
             }
         });
     };
 
-    const isPastDay = (day) => {
-        return day <= new Date();
-    };
+    const isPastDay = (day) => day <= new Date();
 
     useEffect(() => {
         getTime();
@@ -59,7 +83,6 @@ function BookAppointment({ doctor }) {
             timeList.push({ time: i + ':00 AM' });
             timeList.push({ time: i + ':30 AM' });
         }
-
         for (let i = 1; i <= 6; i++) {
             timeList.push({ time: i + ':00 PM' });
             timeList.push({ time: i + ':30 PM' });
@@ -72,14 +95,14 @@ function BookAppointment({ doctor }) {
             <DialogTrigger asChild>
                 <Button className='mt-3 rounded-full'>Book Appointment</Button>
             </DialogTrigger>
-            <DialogContent className='bg-slate-50'>
+            <DialogContent className='bg-slate-50 max-h-[90vh] overflow-y-auto'>
                 <DialogHeader>
                     <DialogTitle className='text-center font-bold pb-4'>Book Appointment</DialogTitle>
                     <DialogDescription asChild>
                         <div>
-                            <div className='grid gap-3 grid-cols-1 md:grid-cols-2'>
+                            <div className='grid gap-3 grid-cols-1 sm:grid-cols-2'>
                                 {/* Calendar */}
-                                <div className='flex flex-col items-baseline'>
+                                <div className='flex flex-col items-baseline w-full'>
                                     <h2 className='flex gap-2 items-center'>
                                         <CalendarDays className='text-primary h-5 w-5' />
                                         Select Date
@@ -89,17 +112,17 @@ function BookAppointment({ doctor }) {
                                         selected={date}
                                         onSelect={setDate}
                                         disabled={isPastDay}
-                                        className="rounded-md mt-2 border bg-slate-50"
+                                        className="rounded-md mt-2 border bg-slate-50 w-full"
                                     />
                                 </div>
 
                                 {/* Time Slot */}
-                                <div className='mt-3 md:mt-0'>
+                                <div className='mt-3 sm:mt-0 w-full'>
                                     <h2 className='flex gap-2 items-center mb-3'>
                                         <Clock className='text-primary h-5 w-5' />
                                         Select Time Slot
                                     </h2>
-                                    <div className='grid grid-cols-3 gap-2 border rounded-lg p-5'>
+                                    <div className='grid grid-cols-2 sm:grid-cols-3 gap-2 border rounded-lg p-5'>
                                         {timeSlot?.map((item, index) => (
                                             <div
                                                 onClick={() => setSelectedTimeSlot(item.time)}
@@ -116,25 +139,24 @@ function BookAppointment({ doctor }) {
                             <div>
                                 <textarea
                                     name="text"
-                                    value={note} // Bound the note state to textarea
+                                    value={note}
                                     onChange={(e) => setNote(e.target.value)}
-                                    className='w-full bg-slate-50 border rounded-md h-[100px] mt-5'
+                                    className='w-full bg-slate-50 border rounded-md h-[100px] mt-5 p-2'
                                     placeholder="Additional notes (optional)"
                                 />
                             </div>
                         </div>
                     </DialogDescription>
                 </DialogHeader>
-                <DialogFooter className="sm:justify-end">
+                <DialogFooter className="flex flex-col sm:flex-row gap-2 sm:justify-end">
                     <DialogClose asChild>
-                        <span>
-                            <Button type="button" className='text-red-500 border-red-500' variant="outline">
-                                Close
-                            </Button>
-                        </span>
+                        <Button type="button" className='text-red-500 border-red-500 w-full sm:w-auto' variant="outline">
+                            Close
+                        </Button>
                     </DialogClose>
                     <Button
                         type="button"
+                        className='w-full sm:w-auto'
                         onClick={saveBooking}
                         disabled={!(date && selectedTimeSlot)}>
                         Submit

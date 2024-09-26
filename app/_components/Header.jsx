@@ -40,9 +40,9 @@ function Header() {
     <div className='flex items-center justify-between p-4 shadow-sm'>
         <div className="flex items-center gap-10">
             <Link href={'/'}>
-            <Image src='/logo.svg' alt='logo'
+            <Image src='/logo.png' alt='logo'
             width={180}
-            height={80} />
+            height={20} />
             </Link>
             
             <ul className='md:flex gap-8 hidden'>

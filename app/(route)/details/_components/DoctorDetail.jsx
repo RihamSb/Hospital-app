@@ -38,7 +38,7 @@ function DoctorDetail({ doctor }) {
               alt="Doctor"
               width={200}
               height={200}
-              className='rounded-lg w-full h-[280px] object-cover'
+              className='rounded-lg w-full h-[480px] object-cover'
             />
           )}
         </div>

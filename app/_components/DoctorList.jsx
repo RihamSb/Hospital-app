@@ -9,7 +9,7 @@ function DoctorList({doctorList, heading}) {
         <h2 className="font-bold text-xl">{heading}</h2>
         <div className='
         grid grid-cols-1 gap-7
-        sm:grid-cols-2 md:grid-cols-2 
+        sm:grid-cols-1 md:grid-cols-2 
         lg:grid-cols-3 mt-4' >
             {doctorList.length>0?doctorList.map((doctor, index)=>(
                 <div className='border-[1px] rounded-lg p-3 
@@ -19,7 +19,7 @@ function DoctorList({doctorList, heading}) {
                     alt='dr'
                     width={500}
                     height={200}
-                    className='h-[400px]  w-full object-cover rounded-lg'
+                    className='h-[500px]  w-full object-cover rounded-lg'
                     />
                     <div className='mt-3 items-baseline flex flex-col gap-1'>
                         <h2 className='text-[10px] bg-blue-100 
@@ -32,7 +32,7 @@ function DoctorList({doctorList, heading}) {
                         </h2>
 
                         <h2 className='text-primary text-sm' >
-                            {doctor.attributes?.Year_of_Experience}
+                            {doctor.attributes?.Year_of_Experience} Of Experience
                         </h2>
                         
                         <h2 className='text-gray-500 text-sm' >
@@ -52,7 +52,7 @@ function DoctorList({doctorList, heading}) {
             )): 
             // Skelton Effect
             [1,2,3,4].map((item, index)=>(
-                <div key={index} className='h-[220px] bg-slate-100 w-full
+                <div key={index} className='h-[500px] bg-slate-100 w-full
                 rounded-lg animate-pulse'></div>
             ))
             

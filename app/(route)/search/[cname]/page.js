@@ -10,7 +10,7 @@ function Search({params}) {
   const [doctorList, setDoctorList] = useState([]);
 
   useEffect(()=>{
-    console.log(params.cname);
+    // console.log(decodeURIComponent(params.cname));
     getDoctors();
   }
   ,[])
@@ -24,7 +24,7 @@ function Search({params}) {
   
   return (
     <div>
-        <DoctorList heading={params.cname} doctorList={doctorList} />
+        <DoctorList heading={decodeURIComponent(params.cname)} doctorList={doctorList} />
     </div>
   )
 }
