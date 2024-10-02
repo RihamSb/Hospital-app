@@ -93,6 +93,7 @@ function CategorySearch() {
               <p className="text-gray-500">{item.attributes?.Specialization}</p> {/* Display specialization if available */}
             </Link>
           ))
+          
         ) : (
           // Show no results message
           <div className="col-span-3 md:col-span-3 lg:col-span-6 text-center mt-10">
