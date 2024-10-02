@@ -5,7 +5,7 @@ import React from 'react'
 
 function DoctorList({doctorList, heading}) {
   return (
-    <div className="mb-10 px-8">
+    <div className="mb-10 px-8" id='explore'>
         <h2 className="font-bold text-xl">{heading}</h2>
         <div className='
         grid grid-cols-1 gap-7

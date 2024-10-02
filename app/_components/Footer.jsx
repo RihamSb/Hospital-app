@@ -3,7 +3,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <footer className="bg-gray-100">
+    <footer className="bg-gray-100" id='footer'>
         <div className="mx-auto max-w-5xl justify-center items-center flex flex-col text-center px-4 py-16 sm:px-6 lg:px-8">
             <Image 
             src={'/logo.png'}
