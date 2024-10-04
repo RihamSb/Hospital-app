@@ -1,44 +1,36 @@
 {
-  "name": "drs",
-  "version": "0.1.0",
+  "name": "drs-admin",
   "private": true,
+  "version": "0.1.0",
+  "description": "A Strapi application",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "email": "email dev"
+    "develop": "strapi develop",
+    "start": "strapi start",
+    "build": "strapi build",
+    "strapi": "strapi",
+    "deploy": "strapi deploy"
   },
   "dependencies": {
-    "@kinde-oss/kinde-auth-nextjs": "^2.3.8",
-    "@radix-ui/react-alert-dialog": "^1.1.1",
-    "@radix-ui/react-dialog": "^1.1.1",
-    "@radix-ui/react-icons": "^1.3.0",
-    "@radix-ui/react-popover": "^1.1.1",
-    "@radix-ui/react-slot": "^1.1.0",
-    "@radix-ui/react-tabs": "^1.1.0",
-    "@react-email/components": "^0.0.25",
-    "axios": "^1.7.7",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "cmdk": "^1.0.0",
-    "date-fns": "^3.6.0",
-    "emailjs-com": "^3.2.0",
-    "lucide-react": "^0.441.0",
-    "moment": "^2.30.1",
-    "next": "14.2.11",
-    "next-themes": "^0.3.0",
-    "react": "^18",
-    "react-day-picker": "^8.10.1",
-    "react-dom": "^18",
-    "resend": "^4.0.0",
-    "sonner": "^1.5.0",
-    "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "@strapi/plugin-cloud": "4.25.11",
+    "@strapi/plugin-i18n": "4.25.11",
+    "@strapi/plugin-users-permissions": "4.25.11",
+    "@strapi/provider-upload-cloudinary": "^4.25.11",
+    "@strapi/strapi": "4.25.11",
+    "better-sqlite3": "8.6.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-router-dom": "5.3.4",
+    "styled-components": "5.3.3"
   },
-  "devDependencies": {
-    "postcss": "^8",
-    "react-email": "3.0.1",
-    "tailwindcss": "^3.4.1"
-  }
+  "author": {
+    "name": "A Strapi developer"
+  },
+  "strapi": {
+    "uuid": "2a3af767-eb92-4b2c-bb00-3980301af70f"
+  },
+  "engines": {
+    "node": ">=18.0.0 <=20.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
 }
